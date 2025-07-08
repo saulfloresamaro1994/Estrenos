@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catálogo de Estrenos 2025</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+        }
+        
+        body {
+            background-color: #0f0f1a;
+            color: white;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        h1 {
+            text-align: center;
+            margin: 30px 0;
+            color: #f5c518;
+            font-size: 2.2rem;
+        }
+        
+        h2 {
+            margin: 30px 0 20px;
+            color: #f5c518;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #2a2a3a;
+            font-size: 1.8rem;
+        }
+        
+        .catalog-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        
+        .movie-card, .series-card {
+            background: #1a1a2e;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s, box-shadow 0.3s;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        
+        .movie-card:hover, .series-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+        }
+        
+        .movie-poster, .series-poster {
+            width: 100%;
+            height: 300px;
+            object-fit: contain;
+            display: block;
+            background-color: #2a2a3a;
+        }
+        
+        .movie-info, .series-info {
+            padding: 15px;
+            flex-grow: 1;
+        }
+        
+        .movie-title, .series-title {
+            font-size: 16px;
+            margin-bottom: 8px;
+            font-weight: bold;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .movie-date, .series-date {
+            color: #aaa;
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+
+        .movie-overview, .series-overview {
+            font-size: 14px;
+            color: #ddd;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            margin-top: 10px;
+            line-height: 1.4;
+        }
+
+        .new-badge {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background-color: #f5c518;
+            color: #0f0f1a;
+            padding: 4px 8px;
+            border-radius: 10px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .card-header {
+            position: relative;
+        }
+
+        .rating {
+            display: flex;
+            align-items: center;
+            margin-top: 5px;
+        }
+
+        .stars {
+            color: #f5c518;
+            margin-right: 5px;
+        }
+
+        .loading {
+            text-align: center;
+            font-size: 18px;
+            margin: 40px 0;
+            grid-column: 1 / -1;
+        }
+
+        .error {
+            text-align: center;
+            color: #ff6b6b;
+            grid-column: 1 / -1;
+        }
+
+        .filter-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            background: #2a2a3a;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .filter-btn:hover {
+            background: #3a3a4a;
+        }
+
+        .filter-btn.active {
+            background: #f5c518;
+            color: #0f0f1a;
+            font-weight: bold;
+        }
+
+        .section-description {
+            text-align: center;
+            color: #aaa;
+            margin-bottom: 30px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.6;
+        }
+
+        @media (max-width: 768px) {
+            .catalog-grid {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+                gap: 15px;
+            }
+            
+            .movie-poster, .series-poster {
+                height: 225px;
+            }
+            
+            .movie-info, .series-info {
+                padding: 12px;
+            }
+            
+            .movie-title, .series-title {
+                font-size: 14px;
+            }
+            
+            .movie-overview, .series-overview {
+                font-size: 13px;
+                -webkit-line-clamp: 2;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .catalog-grid {
+                grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+                gap: 12px;
+            }
+            
+            .movie-poster, .series-poster {
+                height: 195px;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            h2 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1> 🚀 ESTE 2025, VIVE LA MEJOR EXPERIENCIA DE STREAMING 🍿</h1>
+        <p class="section-description">
+         Películas emocionantes, series adictivas y contenido exclusivo. ¡Siempre actualizado!
+        </p>
+
+        <div class="filter-container">
+            <button class="filter-btn active" data-filter="all">Todos</button>
+            <button class="filter-btn" data-filter="movies">Películas</button>
+            <button class="filter-btn" data-filter="series">Series</button>
+        </div>
+        
+        <h2>Películas</h2>
+        <div class="catalog-grid" id="moviesCatalog">
+            <div class="loading">Cargando películas...</div>
+        </div>
+
+        <h2>Series</h2>
+        <div class="catalog-grid" id="seriesCatalog">
+            <div class="loading">Cargando series...</div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const apiKey = 'eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJlMjI0MThkZjc2NTE4NmUyMjA4Y2Y0NGJlZjllM2JkMiIsIm5iZiI6MTcxMTEyMzY3OS44NjYsInN1YiI6IjY1ZmRhY2RmMzc4MDYyMDE3YzM4MTY1NSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.AlxLhYCCZdwKxX1G0i2OyAko3hb3WvXQx8SeP8Yki-A';
+            
+            // Elementos del DOM
+            const moviesCatalog = document.getElementById('moviesCatalog');
+            const seriesCatalog = document.getElementById('seriesCatalog');
+            const filterBtns = document.querySelectorAll('.filter-btn');
+            
+            // Datos
+            let moviesData = [];
+            let seriesData = [];
+            let lastUpdateTime = null;
+            
+            // Función para obtener películas
+            async function fetch2025Movies() {
+                try {
+                    moviesCatalog.innerHTML = '<div class="loading">Cargando películas...</div>';
+                    
+                    let response = await fetch(`https://api.themoviedb.org/3/discover/movie?api_key=e22418df765186e2208cf44bef9e3bd2&primary_release_year=2025&sort_by=popularity.desc&language=es-ES&page=1`);
+                    let data = await response.json();
+                    let newMoviesData = data.results;
+                    
+                    response = await fetch(`https://api.themoviedb.org/3/discover/movie?api_key=e22418df765186e2208cf44bef9e3bd2&primary_release_year=2025&sort_by=popularity.desc&language=es-ES&page=2`);
+                    data = await response.json();
+                    newMoviesData = [...newMoviesData, ...data.results];
+
+                    newMoviesData = sortItemsByDate(newMoviesData, 'release_date');
+                    moviesData = newMoviesData;
+                    lastUpdateTime = new Date();
+                    
+                    displayMovies();
+                } catch (error) {
+                    console.error('Error al cargar películas:', error);
+                    moviesCatalog.innerHTML = '<div class="error">Error al cargar películas. Intenta más tarde.</div>';
+                }
+            }
+            
+            // Función para obtener series (excluyendo coreanas y anime)
+            async function fetch2025Series() {
+                try {
+                    seriesCatalog.innerHTML = '<div class="loading">Cargando series...</div>';
+                    
+                    let response = await fetch(`https://api.themoviedb.org/3/discover/tv?api_key=e22418df765186e2208cf44bef9e3bd2&first_air_date_year=2025&sort_by=popularity.desc&language=es-ES&page=1`);
+                    let data = await response.json();
+                    let newSeriesData = data.results;
+                    
+                    response = await fetch(`https://api.themoviedb.org/3/discover/tv?api_key=e22418df765186e2208cf44bef9e3bd2&first_air_date_year=2025&sort_by=popularity.desc&language=es-ES&page=2`);
+                    data = await response.json();
+                    newSeriesData = [...newSeriesData, ...data.results];
+
+                    // Filtrar series coreanas y de anime
+                    newSeriesData = newSeriesData.filter(series => {
+                        const isKorean = series.original_language === 'ko' || 
+                                       (series.origin_country && series.origin_country.includes('KR'));
+                        const isAnime = (series.genre_ids && series.genre_ids.includes(16)) ||
+                                      (series.name && series.name.toLowerCase().includes('anime'));
+                        return !isKorean && !isAnime;
+                    });
+
+                    newSeriesData = sortItemsByDate(newSeriesData, 'first_air_date');
+                    seriesData = newSeriesData;
+                    lastUpdateTime = new Date();
+                    
+                    displaySeries();
+                } catch (error) {
+                    console.error('Error al cargar series:', error);
+                    seriesCatalog.innerHTML = '<div class="error">Error al cargar series. Intenta más tarde.</div>';
+                }
+            }
+            
+            function sortItemsByDate(items, dateField) {
+                const today = new Date();
+                today.setHours(0, 0, 0, 0);
+                
+                return items.sort((a, b) => {
+                    if (!a[dateField] && !b[dateField]) return 0;
+                    if (!a[dateField]) return 1;
+                    if (!b[dateField]) return -1;
+                    
+                    const dateA = new Date(a[dateField]);
+                    const dateB = new Date(b[dateField]);
+                    
+                    if (dateA <= today && dateB <= today) return dateB - dateA;
+                    if (dateA > today && dateB > today) return dateA - dateB;
+                    return dateA <= today ? -1 : 1;
+                });
+            }
+            
+            function displayMovies() {
+                moviesCatalog.innerHTML = '';
+                
+                const today = new Date();
+                today.setHours(0, 0, 0, 0);
+                
+                const fragment = document.createDocumentFragment();
+                
+                moviesData.forEach(movie => {
+                    if (!movie.poster_path) return;
+                    
+                    const movieCard = document.createElement('div');
+                    movieCard.className = 'movie-card';
+                    movieCard.dataset.type = 'movie';
+                    movieCard.dataset.date = movie.release_date || '';
+                    
+                    const posterUrl = `https://image.tmdb.org/t/p/w500${movie.poster_path}`;
+                    const releaseDate = movie.release_date 
+                        ? new Date(movie.release_date).toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' })
+                        : 'Fecha por confirmar';
+                    
+                    const isNewRelease = movie.release_date && new Date(movie.release_date).getTime() === today.getTime();
+                    const isComingSoon = movie.release_date && new Date(movie.release_date) > today;
+                    
+                    movieCard.dataset.status = isNewRelease ? 'new' : isComingSoon ? 'soon' : 'released';
+                    
+                    movieCard.innerHTML = `
+                        <div class="card-header">
+                            <img src="${posterUrl}" alt="${movie.title}" class="movie-poster" loading="lazy" onerror="this.src='https://via.placeholder.com/500x750?text=Poster+no+disponible'">
+                            ${isNewRelease ? '<span class="new-badge">NUEVO</span>' : ''}
+                        </div>
+                        <div class="movie-info">
+                            <h3 class="movie-title" title="${movie.title}">${movie.title}</h3>
+                            <p class="movie-date">${releaseDate}</p>
+                            <div class="rating">
+                                <span class="stars">${getStarRating(movie.vote_average)}</span>
+                                <span>${movie.vote_average.toFixed(1)}/10</span>
+                            </div>
+                            <p class="movie-overview" title="${movie.overview || 'Descripción no disponible'}">
+                                ${movie.overview || 'Descripción no disponible'}
+                            </p>
+                        </div>
+                    `;
+                    
+                    fragment.appendChild(movieCard);
+                });
+                
+                moviesCatalog.appendChild(fragment);
+                applyFilters();
+            }
+            
+            function displaySeries() {
+                seriesCatalog.innerHTML = '';
+                
+                const today = new Date();
+                today.setHours(0, 0, 0, 0);
+                
+                const fragment = document.createDocumentFragment();
+                
+                seriesData.forEach(series => {
+                    if (!series.poster_path) return;
+                    
+                    const seriesCard = document.createElement('div');
+                    seriesCard.className = 'series-card';
+                    seriesCard.dataset.type = 'series';
+                    seriesCard.dataset.date = series.first_air_date || '';
+                    
+                    const posterUrl = `https://image.tmdb.org/t/p/w500${series.poster_path}`;
+                    const airDate = series.first_air_date 
+                        ? new Date(series.first_air_date).toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' })
+                        : 'Fecha por confirmar';
+                    
+                    const isNewRelease = series.first_air_date && new Date(series.first_air_date).getTime() === today.getTime();
+                    const isComingSoon = series.first_air_date && new Date(series.first_air_date) > today;
+                    
+                    seriesCard.dataset.status = isNewRelease ? 'new' : isComingSoon ? 'soon' : 'released';
+                    
+                    seriesCard.innerHTML = `
+                        <div class="card-header">
+                            <img src="${posterUrl}" alt="${series.name}" class="series-poster" loading="lazy" onerror="this.src='https://via.placeholder.com/500x750?text=Poster+no+disponible'">
+                            ${isNewRelease ? '<span class="new-badge">NUEVO</span>' : ''}
+                        </div>
+                        <div class="series-info">
+                            <h3 class="series-title" title="${series.name}">${series.name}</h3>
+                            <p class="series-date">${airDate}</p>
+                            <div class="rating">
+                                <span class="stars">${getStarRating(series.vote_average)}</span>
+                                <span>${series.vote_average.toFixed(1)}/10</span>
+                            </div>
+                            <p class="series-overview" title="${series.overview || 'Descripción no disponible'}">
+                                ${series.overview || 'Descripción no disponible'}
+                            </p>
+                        </div>
+                    `;
+                    
+                    fragment.appendChild(seriesCard);
+                });
+                
+                seriesCatalog.appendChild(fragment);
+                applyFilters();
+            }
+            
+            function getStarRating(voteAverage) {
+                const starsCount = Math.round(voteAverage / 2);
+                return '★'.repeat(starsCount) + '☆'.repeat(5 - starsCount);
+            }
+            
+            // Filtros
+            function setupFilters() {
+                filterBtns.forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        filterBtns.forEach(b => b.classList.remove('active'));
+                        btn.classList.add('active');
+                        applyFilters();
+                    });
+                });
+            }
+            
+            function applyFilters() {
+                const activeFilter = document.querySelector('.filter-btn.active').dataset.filter;
+                
+                document.querySelectorAll('.movie-card, .series-card').forEach(card => {
+                    card.style.display = 'none';
+                    
+                    if (activeFilter === 'all') {
+                        card.style.display = 'block';
+                    } else if (activeFilter === 'movies' && card.classList.contains('movie-card')) {
+                        card.style.display = 'block';
+                    } else if (activeFilter === 'series' && card.classList.contains('series-card')) {
+                        card.style.display = 'block';
+                    }
+                });
+            }
+            
+            // Iniciar
+            fetch2025Movies();
+            fetch2025Series();
+            setupFilters();
+
+            // Actualizar cada hora
+            setInterval(() => {
+                fetch2025Movies();
+                fetch2025Series();
+            }, 3600000);
+        });
+    </script>
+</body>
+</html>
